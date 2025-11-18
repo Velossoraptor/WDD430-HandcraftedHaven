@@ -4,7 +4,7 @@ import QuickActions from '@/components/dashboard/QuickActions';
 import RecentOrders from '@/components/dashboard/RecentOrders';
 import ProfileSummary from '@/components/dashboard/ProfileSummary';
 
-// Mock data (Use your actual API fetches here later)
+
 const mockSellerData = {
   activeListings: 24,
   pendingOrders: 3,

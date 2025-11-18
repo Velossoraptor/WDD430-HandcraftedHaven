@@ -3,10 +3,10 @@
 
 import Link from 'next/link';
 import { ShoppingBag, Home, Info, LogIn } from 'lucide-react';
-import UserMenu from './UserMenu'; // 💡 Import the new component
+import UserMenu from './UserMenu'; // 
 
-// Mock Authentication State (Set to true to show the User Menu)
-const isAuthenticated = true; // <--- Set this to true to see the dropdown!
+// Mock Authentication State
+const isAuthenticated = true; //
 
 // Define the structure for the public links
 const publicLinks = [

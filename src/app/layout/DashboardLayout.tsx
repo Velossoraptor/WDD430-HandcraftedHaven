@@ -1,6 +1,6 @@
 import React from 'react';
 import Sidebar from './Sidebar'; // Assuming Sidebar is in the same directory (./Sidebar.tsx)
-// import Header from './Header'; // Placeholder - we will build this next
+
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

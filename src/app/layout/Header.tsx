@@ -5,7 +5,7 @@ import React from 'react';
 
 
 export default function Header() { 
-  // In a real application, you would use useState here to manage the mobile menu state.
+
   
   return (
     // Header for the main content area
