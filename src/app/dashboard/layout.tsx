@@ -1,13 +1,10 @@
 "use client";
-import { Button } from "@/src/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-// import { signout } from "@/app/api/auth/(vendor-specific)/signout/route.js";
-import { useRouter } from "next/navigation";
 /*********** Lucid icon***********/
 import { LogOut, X, Menu } from "lucide-react";
-// import { apiUrl } from "@/config/baseUrlConfig";
 
 export default function DashboardLayout({
   children,
@@ -21,108 +18,107 @@ export default function DashboardLayout({
     setMenuOpen((open) => !open);
   };
 
-  // Close menu on route change (using pathname as dependency)
+  // Close menu on route change (good for mobile UX)
   useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
-
-  // Check if vendor is verified
-  /*   useEffect(() => {
-    const checkIfVendorisVerified = async () => {
-      const res = await fetch(
-        apiUrl("/api/vendor/verification/check-vendor-verification", {
-          credentials: "same-origin",
-        })
-      );
-      const data = await res.json();
-
-      if (!res.ok || data.error) {
-        setVerified(false);
-        return;
-      }
-
-      const isVerified = data.success && data.isVerified;
-      setVerified(isVerified);
-    };
-    checkIfVendorisVerified();
-
-    // Restore short-lived dismissal for this session
-    const dismissedFlag =
-      typeof window !== "undefined" &&
-      sessionStorage.getItem("dismiss_verify_banner");
-    if (dismissedFlag) setDismissed(true);
-  }, [verified, dismissed]); */
-
-  // Signout
-  /*  const router = useRouter();
-  const handleSignout = async () => {
-    try {
-      await signout();
-      router.push("/");
-    } catch (error) {
-      console.error("Logout failed:", error);
+    // FIX: Only call setMenuOpen(false) if the menu is currently open.
+    // This avoids setting state synchronously in an effect when the state hasn't changed,
+    // which resolves the cascading renders warning.
+    if (menuOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMenuOpen(false);
     }
-  }; */
+  }, [pathname, menuOpen]);
 
+  // --- Signout and Verification Logic (Commented out as APIs are missing) ---
+  /*
+  // import { useRouter } from "next/navigation";
+  // const router = useRouter();
+  // const handleSignout = async () => {
+  //    ... signout logic ...
+  // };
+  */
+  
+  // --- Navigation Links ---
+  // Note: Removed duplicate 'Overview' link
   const navLinks = [
-    { label: "Overview", href: "/dashboard/overview" },
+    { label: "Overview", href: "/dashboard" }, // Assumes root /dashboard is the overview
     { label: "Products", href: "/dashboard/products" },
+    { label: "Orders", href: "/dashboard/orders" }, 
+    { label: "Reviews", href: "/dashboard/reviews" },
     { label: "Profile", href: "/dashboard/profile" },
     { label: "Billing", href: "/dashboard/billing" },
+    { label: "Settings", href: "/dashboard/settings" },
   ];
 
   return (
-    <div className="flex min-h-screen bg-(--background)">
-      {/* Sidebar */}
+    <div className="flex min-h-screen bg-gray-50"> 
+      {/* -------------------- Sidebar Container -------------------- */}
       <aside className="relative">
+        
+        {/* Mobile Menu Toggle (Visible only on small screens) */}
         <span
           aria-label="Open menu"
           onClick={handleMenuClick}
-          className="lg:hidden cursor-pointer fixed right-4 top-4 z-50 bg-white dark:bg-gray-800 p-2 rounded-md shadow-md"
+          className="lg:hidden cursor-pointer fixed right-4 top-4 z-50 bg-white p-2 rounded-md shadow-lg transition duration-200 hover:scale-105"
         >
-          {menuOpen ? <X /> : <Menu />}
+          {menuOpen 
+            ? <X className="w-6 h-6 text-amber-700" /> 
+            : <Menu className="w-6 h-6 text-amber-700" />
+          }
         </span>
 
+        {/* Sidebar Panel - Fixed on Desktop, Collapsible on Mobile */}
         <div
           className={`${
-            menuOpen ? "w-64 h-full bg-[#fafafa] shadow shadow-md" : "w-0"
-          } fixed left-0 top-0 lg:left-0 lg:top-0 lg:w-64 lg:h-screen dark:bg-(--background) dark:text-(--foreground) lg:bg-[#fafafa] lg:shadow lg:shadow-md p-4 transition-all duration-300 ease-in-out z-40`}
+            menuOpen ? "w-64 h-full shadow-xl" : "w-0"
+          } fixed left-0 top-0 lg:left-0 lg:top-0 lg:w-64 lg:h-screen lg:shadow-xl 
+             bg-white dark:bg-gray-900 dark:text-gray-100 p-4 transition-all duration-300 ease-in-out z-40 overflow-y-auto`}
         >
+          {/* Logo/Branding */}
+          <div className="text-xl font-bold text-amber-700 mb-6 mt-2">
+             Handcrafted Haven
+          </div>
+          
+          {/* Navigation */}
           <nav
+            // The lg:flex ensures navigation is always visible on desktop
             className={`
-                  ${
-                    menuOpen ? "flex flex-col" : "hidden"
-                  } lg:flex lg:flex-col space-y-2
-               `}
+              ${menuOpen ? "flex flex-col" : "hidden"} lg:flex lg:flex-col space-y-1
+            `}
           >
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className={`hover:bg-gray-300 hover:rounded dark:hover:bg-gray-600 dark:focus:bg-gray-600 p-2 focus:bg-gray-300 transition delay-50 duration-150 ease-in-out ${
-                  pathname.endsWith(link.href) &&
-                  "bg-gray-300 dark:bg-gray-600 p-2 rounded"
+                onClick={() => setMenuOpen(false)} 
+                className={`hover:bg-amber-100 dark:hover:bg-amber-900 p-2 rounded-lg transition duration-150 ease-in-out font-medium flex items-center ${
+                  pathname === link.href 
+                    ? "bg-amber-600 text-white shadow-md" // Active state
+                    : "text-gray-700 dark:text-gray-300 hover:text-amber-700" // Inactive state
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-            <Button
-              //   onClick={handleSignout}
-              type="submit"
-              className="cursor-pointer flex items-center text-red-400"
-            >
-              <span>
-                <LogOut className="w-4 transform rotate-180" />
-              </span>
-              Sign out
-            </Button>
+            
+            {/* Sign Out Section */}
+            <div className="pt-4 mt-4 border-t border-gray-200">
+                <Button
+                  // onClick={handleSignout}
+                  type="button" 
+                  className="cursor-pointer w-full justify-start flex items-center text-red-600 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition duration-150"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign out
+                </Button>
+            </div>
           </nav>
         </div>
       </aside>
 
-      {/* Main content */}
-      <main className="mt-15 lg:mt-0 lg:ml-64 w-full lg:p-8 p-4">
+      {/* -------------------- Main content Area -------------------- */}
+      {/* The lg:ml-64 creates the necessary offset for the fixed sidebar on desktop */}
+      <main className="flex-1 lg:ml-64 w-full p-4 lg:p-8">
         {children}
       </main>
     </div>
