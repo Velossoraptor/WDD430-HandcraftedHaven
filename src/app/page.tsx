@@ -1,5 +1,6 @@
 import Hero from "../components/Hero";
 import ProductGrid from "../components/ProductGrid";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -7,9 +8,9 @@ export default function HomePage() {
     <main className="min-h-screen bg-amber-50 text-gray-900 pt-16 md:pt-0">
       <nav className="md:hidden fixed top-0 left-0 right-0 bg-white/90 backdrop-blur border-b z-50">
         <div className="max-w-7xl mx-auto px-4 py-2 flex justify-around text-sm font-medium">
-          <a href="/" className="text-gray-800">Home</a>
-          <a href="/shop" className="text-gray-800">Shop</a>
-          <a href="/about" className="text-gray-800">About</a>
+          <Link href="/" className="text-gray-800">Home</Link>
+          <Link href="/shop" className="text-gray-800">Shop</Link>
+          <Link href="/about" className="text-gray-800">About</Link>
         </div>
       </nav>
       <Hero />
