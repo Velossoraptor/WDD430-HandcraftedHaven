@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 // Assuming Geist fonts are correctly configured
 import { Geist, Geist_Mono } from "next/font/google"; 
 import "./globals.css";
+import { ToastContainer } from "react-toastify";
 
 // 💡 Import the NavBar component
 import NavBar from '@/components/layout/NavBar'; 
@@ -32,13 +33,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gray-50`}
       >
         {/* 1. The NavBar is placed here to appear on every page */}
-        <NavBar /> 
-        
+        <NavBar />
+
         {/* 2. The main page content */}
-        <main>
-            {children}
-        </main>
-        
+        <main>{children}</main>
+        <ToastContainer />
       </body>
     </html>
   );

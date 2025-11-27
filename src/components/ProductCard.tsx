@@ -14,16 +14,10 @@ export default function ProductCard({ name, price, image, category }: ProductCar
       {/* 🖼️ Image Area */}
       <div className="relative w-full aspect-square overflow-hidden rounded-xl mb-4">
         <Image
-          // 🛑 FIX: Using the 'image' prop here resolves the unused variable warning.
           src={image} 
-          
           alt={`Handcrafted ${name}`}
-          
-          // REQUIRED: Define the intrinsic size. Adjust these values based on your typical card size.
           width={400} 
           height={400} 
-          
-          // Layout/Styling props
           className="object-cover transition-transform duration-300 hover:scale-105"
         />
       </div>
