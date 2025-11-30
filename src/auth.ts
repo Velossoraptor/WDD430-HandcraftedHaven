@@ -20,6 +20,8 @@ async function getUser(email: string): Promise<User | undefined> {
  
 export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  // Use a real secret in production: set NEXTAUTH_SECRET in your .env
+  secret: process.env.NEXTAUTH_SECRET || process.env.STACK_SECRET_SERVER_KEY || process.env.SESSION_SECRET || 'dev-secret',
   providers: [
     Credentials({
       async authorize(credentials) {
