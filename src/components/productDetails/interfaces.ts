@@ -1,3 +1,5 @@
+import { number } from "zod";
+
 export interface Review {
   id: number;
   productName: string;
@@ -10,17 +12,24 @@ export interface ReviewProps {
   reviewData: Review[];
 }
 
-export interface ProductInformation{
-  productName: string;
-  productId: number;
-  productImage: string;
-  productDesc: string;
-  productPrice: number;
-  sellerName: string;
-  sellerId: number;
-  sellerImage: string;
+export interface ProductSellerInfoProps {
+  fname: string;
+  lname: string;
+  //sellerId: string;
+  //sellerImage: string;
 }
 
-export interface ProductSummaryProps {
-  productInfo: ProductInformation;
+export interface ProductCartProps {
+  listing_id: string;
+  product_image: string;
+  product_name: string;
+  description: string;
+  price: number;
+  stock: number;
+  category: string;
 }
+
+//export interface ProductSummaryProps {
+//productInfo: ProductCartProps;
+//sellerInfo: ProductSellerInfoProps;
+//}

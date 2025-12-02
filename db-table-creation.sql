@@ -1,46 +1,34 @@
 -- USERS (Buyers)
 CREATE TABLE users (
-    user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     fname VARCHAR(150) NOT NULL,
     lname VARCHAR(150) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
+    account_type account_type NOT NULL,
     password_hash TEXT NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
--- VENDORS / ARTISANS
-CREATE TABLE vendors (
-    vendor_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    fname VARCHAR(150) NOT NULL,
-    lname VARCHAR(150) NOT NULL,
-    email VARCHAR(150) UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    shop_name VARCHAR(200) NOT NULL,
-    bio TEXT,
-    is_verified BOOLEAN DEFAULT FALSE,
-    profile_image TEXT,
-    created_at TIMESTAMP DEFAULT NOW()
-);
+
 -- CATEGORIES
 CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,
     description TEXT
 );
+
 -- PRODUCTS / LISTINGS
 CREATE TABLE products (
-    product_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    vendor_id UUID REFERENCES vendors(vendor_id) ON DELETE CASCADE,
-    category_id INT REFERENCES categories(category_id) ON DELETE
-    SET NULL,
-        title VARCHAR(200) NOT NULL,
-        description TEXT,
-        price NUMERIC(10, 2) NOT NULL,
-        image_url TEXT NOT NULL,
-        stock INT DEFAULT 0,
-        is_active BOOLEAN DEFAULT TRUE,
-        created_at TIMESTAMP DEFAULT NOW()
+   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+   account_id UUID REFERENCES users(id) ON DELETE CASCADE,
+   product_image TEXT NOT NULL,
+   product_name TEXT NOT NULL,
+   description TEXT NOT NULL,
+   price NUMERIC(10, 2) NOT NULL,
+   stock NUMERIC(10) NOT NULL,
+   category categories-type NOT NULL,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 -- FAVORITES (Wishlists)
 CREATE TABLE favorites (
