@@ -1,11 +1,10 @@
--- USERS (Buyers)
+-- USERS
 CREATE TABLE users (
-   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    fname VARCHAR(150) NOT NULL,
-    lname VARCHAR(150) NOT NULL,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(150) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
-    account_type account_type NOT NULL,
-    password_hash TEXT NOT NULL,
+    password TEXT NOT NULL,
+    role VARCHAR(50) NOT NULL DEFAULT 'customer',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

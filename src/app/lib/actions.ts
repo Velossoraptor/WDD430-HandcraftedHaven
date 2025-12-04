@@ -72,9 +72,12 @@ export async function signup(state: FormState, formData: FormData) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert new user into the database
+    // Provide `account_type` as well to satisfy legacy schemas that require it.
+    // Map role -> account_type (use same value). Adjust mapping here if your DB expects different strings.
+    const account_type = role;
     await sql`
-      INSERT INTO users (name, email, password, role)
-      VALUES (${name}, ${email}, ${hashedPassword}, ${role})
+      INSERT INTO users (name, email, password, pword, role, account_type)
+      VALUES (${name}, ${email}, ${hashedPassword}, ${hashedPassword}, ${role}, ${account_type})
     `;
 
   } catch (error) {

@@ -6,14 +6,18 @@ import { NextResponse } from "next/server";
 
 export default async function HomePage() {
   // Query the database and return products
-  const retrieveData = await pool.query("SELECT * FROM products");
-  if (!retrieveData) {
-    return NextResponse.json(
-      { success: false, message: "Failed to retrieve products" },
-      { status: 500 }
-    );
+  let products = [];
+  try {
+    const retrieveData = await pool.query("SELECT * FROM products");
+    products = retrieveData?.rows || [];
+  } catch (error) {
+    // Log the DB error and render the page with an empty product list instead of crashing.
+    // ETIMEDOUT and other connection errors will be visible in server logs.
+    // You may want to show a friendly message or a retry UI in the future.
+    // eslint-disable-next-line no-console
+    console.error('Database query failed on HomePage:', error);
+    products = [];
   }
-  const products = retrieveData.rows;
 
   return (
     // add mobile nav (visible on small screens) and pad main on mobile to avoid overlap
