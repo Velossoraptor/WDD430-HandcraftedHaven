@@ -36,3 +36,6 @@ Every component for this project is in the `src/components/ui` directory.
 - Button
 - Input
 - Label
+
+#  Runs the TypeScript database-initialization script once (without installing it into the project). It executes init-db.ts, which connects to your Postgres DB and applies non‑destructive schema updates and a test user insert.
+pnpm.cmd dlx tsx wdd430-handcraftedhaven/scripts/init-db.ts
