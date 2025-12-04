@@ -1,5 +1,6 @@
 import ProductCard from "./ProductCard";
 
+/*
 const products = [
   {
     name: "Handwoven Basket",
@@ -25,9 +26,17 @@ const products = [
     image: "/images/sculpture.jpg",
     category: "Art",
   },
-];
+];*/
 
-export default function ProductGrid() {
+interface Product {
+  listing_id: string;
+  product_name: string;
+  price: number;
+  product_image: string;
+  category: string;
+}
+
+export default function ProductGrid({ products }: { products: Product[] }) {
   return (
     <div id="products" className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
       {products.map((product, index) => (

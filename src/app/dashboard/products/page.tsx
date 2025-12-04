@@ -1,9 +1,9 @@
 // This file assumes it is located at: src/app/dashboard/products/page.tsx
-'use client'; 
+"use client";
 
-import DashboardLayout from '@/app/layout/DashboardLayout';
-import Link from 'next/link';
-import { PlusCircle, Edit, Trash2, Package } from 'lucide-react';
+import DashboardLayout from "@/app/layout/DashboardLayout";
+import Link from "next/link";
+import { PlusCircle, Edit, Trash2, Package } from "lucide-react";
 
 // --- Mock Data ---
 interface Product {
@@ -12,52 +12,94 @@ interface Product {
   category: string;
   price: number;
   stock: number;
-  status: 'Active' | 'Draft' | 'Low Stock';
+  status: "Active" | "Draft" | "Low Stock";
 }
 
 const mockProducts: Product[] = [
-  { id: 'P001', name: 'Hand-Painted Ceramic Mug', category: 'Pottery', price: 25.50, stock: 15, status: 'Active' },
-  { id: 'P002', name: 'Rustic Oak Cutting Board', category: 'Woodwork', price: 55.00, stock: 3, status: 'Low Stock' },
-  { id: 'P003', name: 'Beaded Leather Bracelet', category: 'Jewelry', price: 18.00, stock: 0, status: 'Draft' },
-  { id: 'P004', name: 'Lavender Scented Soap Bar', category: 'Bath & Body', price: 7.99, stock: 40, status: 'Active' },
+  {
+    id: "P001",
+    name: "Hand-Painted Ceramic Mug",
+    category: "Pottery",
+    price: 25.5,
+    stock: 15,
+    status: "Active",
+  },
+  {
+    id: "P002",
+    name: "Rustic Oak Cutting Board",
+    category: "Woodwork",
+    price: 55.0,
+    stock: 3,
+    status: "Low Stock",
+  },
+  {
+    id: "P003",
+    name: "Beaded Leather Bracelet",
+    category: "Jewelry",
+    price: 18.0,
+    stock: 0,
+    status: "Draft",
+  },
+  {
+    id: "P004",
+    name: "Lavender Scented Soap Bar",
+    category: "Bath & Body",
+    price: 7.99,
+    stock: 40,
+    status: "Active",
+  },
 ];
 
 // Helper function for status badges
-const getStatusBadge = (status: Product['status']) => {
+const getStatusBadge = (status: Product["status"]) => {
   switch (status) {
-    case 'Active':
-      return <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-800">Active</span>;
-    case 'Draft':
-      return <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-200 text-gray-700">Draft</span>;
-    case 'Low Stock':
-      return <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-800">Low Stock</span>;
+    case "Active":
+      return (
+        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-800">
+          Active
+        </span>
+      );
+    case "Draft":
+      return (
+        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-200 text-gray-700">
+          Draft
+        </span>
+      );
+    case "Low Stock":
+      return (
+        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-800">
+          Low Stock
+        </span>
+      );
   }
 };
 
-
 export default function ProductListingsPage() {
-
   // Functionality placeholders (these would call your Node.js API)
-  const handleEdit = (id: string) => { console.log(`Editing product: ${id}`); };
-  const handleDelete = (id: string) => { 
+  const handleEdit = (id: string) => {
+    console.log(`Editing product: ${id}`);
+  };
+  const handleDelete = (id: string) => {
     if (confirm(`Are you sure you want to delete product ${id}?`)) {
-      console.log(`Deleting product: ${id}`); 
+      console.log(`Deleting product: ${id}`);
     }
   };
 
   return (
     <DashboardLayout>
       <div className="p-6 md:p-10 space-y-8 bg-gray-50">
-        
         {/* Header and Actions */}
         <header className="flex justify-between items-center pb-4 border-b">
           <h1 className="text-3xl font-extrabold text-amber-900 flex items-center">
-             <Package className="w-8 h-8 mr-3 text-amber-600" aria-hidden="true" />
-             My Product Listings
+            <Package
+              className="w-8 h-8 mr-3 text-amber-600"
+              aria-hidden="true"
+            />
+            My Product Listings
           </h1>
-          
+
           {/* Create New Product Button */}
-          <Link 
+          <Link
             href="/dashboard/products/new"
             className="flex items-center bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-150"
           >
@@ -94,7 +136,10 @@ export default function ProductListingsPage() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-100">
                 {mockProducts.map((product) => (
-                  <tr key={product.id} className="hover:bg-amber-50 transition duration-100">
+                  <tr
+                    key={product.id}
+                    className="hover:bg-amber-50 transition duration-100"
+                  >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {product.name}
                     </td>
@@ -104,7 +149,15 @@ export default function ProductListingsPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">
                       ${product.price.toFixed(2)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold" style={{ color: product.stock <= 5 && product.stock > 0 ? '#cc3300' : 'inherit' }}>
+                    <td
+                      className="px-6 py-4 whitespace-nowrap text-sm font-bold"
+                      style={{
+                        color:
+                          product.stock <= 5 && product.stock > 0
+                            ? "#cc3300"
+                            : "inherit",
+                      }}
+                    >
                       {product.stock}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -112,16 +165,16 @@ export default function ProductListingsPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                       {/* Edit Button */}
-                      <button 
+                      <button
                         onClick={() => handleEdit(product.id)}
                         className="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-50 transition duration-150"
                         aria-label={`Edit ${product.name}`}
                       >
                         <Edit className="w-5 h-5" />
                       </button>
-                      
+
                       {/* Delete Button */}
-                      <button 
+                      <button
                         onClick={() => handleDelete(product.id)}
                         className="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-50 transition duration-150"
                         aria-label={`Delete ${product.name}`}
@@ -134,13 +187,12 @@ export default function ProductListingsPage() {
               </tbody>
             </table>
           </div>
-          
+
           {/* Footer/Pagination Placeholder */}
           <div className="p-4 border-t text-sm text-gray-600 flex justify-end">
             Showing 1 to {mockProducts.length} of {mockProducts.length} results.
           </div>
         </div>
-
       </div>
     </DashboardLayout>
   );

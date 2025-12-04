@@ -2,12 +2,7 @@
 
 :root {
   --background: #f1f1f2;
-  --white-fff: #ffffff;
   --foreground: #171717;
-  --greenish-color: #006c36;
-  --dark-green-color: #0e5532;
-  --gray-color: #f5f5f5;
-  --darker-green-color: #023430;
 }
 
 @theme inline {
