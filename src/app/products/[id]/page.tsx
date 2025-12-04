@@ -4,30 +4,6 @@ import ReviewSummary from '@/components/productDetails/reviewSummary';
 import pool from '@/_lib/vendor/db';
 import { NextResponse } from 'next/server';
 import { Review } from '@/components/productDetails/interfaces';
-// Replace with dynamic list of reviews from db, all from the same productName and seller (product ID?)
-// const mockReviews: Review[] = [
-// 	{
-// 		id: 1,
-// 		productName: 'Rustic Wooden Bowl',
-// 		rating: 5,
-// 		comment: 'Beautifully made and fast shipping! Thank you.',
-// 		customerName: 'A. Customer',
-// 	},
-// 	{
-// 		id: 2,
-// 		productName: 'Rustic Wooden Bowl',
-// 		rating: 4,
-// 		comment: 'The color is perfect, but it arrived a day late.',
-// 		customerName: 'B. Shopper',
-// 	},
-// 	{
-// 		id: 3,
-// 		productName: 'Rustic Wooden Bowl',
-// 		rating: 5,
-// 		comment: 'High quality craftsmanship. Will order again!',
-// 		customerName: 'C. Buyer',
-// 	},
-// ];
 
 export default async function generateStaticParams({
 	params,
@@ -75,8 +51,8 @@ export default async function generateStaticParams({
 				</h2>
 				{/* Product Summary; Image, Information, Vendor Card*/}
 				<ProductSummary productInfo={product} sellerInfo={product} />
-				{/* Form to write reviews */}
-				<ReviewSummary />
+				{/* Form to write reviews THIS ID WILL ALWAYS BE JANE CHANGE TO DYNAMIC ONCE I FIGURE OUT WHERE ITS STORED */}
+				<ReviewSummary listingId={productId} customerId="2bc94b1b-ebf0-412a-832e-4c9ea24e7d45"/>
 				{/* Load reviews that have already been written */}
 				<Reviews reviewData={reviews} />
 			</section>

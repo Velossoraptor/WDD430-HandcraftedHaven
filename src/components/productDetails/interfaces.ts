@@ -17,6 +17,11 @@ export interface ReviewProps {
   reviewData: Review[];
 }
 
+export interface CreateReviewProps {
+  listingId: string;
+  customerId: string;
+}
+
 export interface ProductSellerInfoProps {
   fname: string;
   lname: string;
