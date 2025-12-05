@@ -1,18 +1,51 @@
-'use client';
+"use client";
 
-import { useSession, signOut } from 'next-auth/react';
-import Link from 'next/link';
-import { useState } from 'react';
-import { useCartContext } from '../context/CartContext';
-import { ShoppingCart } from 'lucide-react';
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useCartContext } from "../context/CartContext";
+import { ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function NavBar() {
-  const { data: session, status } = useSession();
-   const [isMenuOpen, setIsMenuOpen] = useState(false);
-   const { cartCount } = useCartContext();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cartCount } = useCartContext();
+  const [loggedInUser, setLoggedInUser] = useState<string | undefined>(
+    undefined
+  );
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: '/' });
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await fetch("/api/auth/session");
+        if (response.ok) {
+          const data = await response.json();
+          setLoggedInUser(data?.fname || undefined);
+        } else {
+          setLoggedInUser(undefined);
+        }
+      } catch (error) {
+        console.error("Session check failed:", error);
+        setLoggedInUser(undefined);
+      }
+    };
+
+    checkSession();
+  }, [pathname]);
+
+  const handleSignOut = async () => {
+    try {
+      const response = await fetch("/api/auth/signout", { method: "POST" });
+      if (response.ok) {
+        setLoggedInUser(undefined);
+        router.push("/");
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Sign out failed:", error);
+    }
   };
 
   return (
@@ -53,15 +86,10 @@ export default function NavBar() {
 
           {/* Desktop Auth Buttons - Right Side */}
           <div className="hidden md:flex items-center space-x-4">
-            {status === "loading" ? (
-              <div className="flex space-x-3">
-                <div className="w-20 h-9 bg-gray-200 animate-pulse rounded-md"></div>
-                <div className="w-20 h-9 bg-gray-200 animate-pulse rounded-md"></div>
-              </div>
-            ) : session ? (
+            {loggedInUser && (
               <div className="flex items-center space-x-4">
                 <span className="text-gray-700 text-sm">
-                  Welcome, {session.user?.name || session.user?.email}
+                  Welcome, {loggedInUser}
                 </span>
                 <Link
                   href="/dashboard"
@@ -71,12 +99,13 @@ export default function NavBar() {
                 </Link>
                 <button
                   onClick={handleSignOut}
-                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors font-medium text-sm"
+                  className="bg-gray-200 cursor-pointer text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors font-medium text-sm"
                 >
                   Sign Out
                 </button>
               </div>
-            ) : (
+            )}
+            {!loggedInUser && (
               <div className="flex items-center space-x-3">
                 <Link
                   href="/login"
@@ -169,17 +198,12 @@ export default function NavBar() {
 
               {/* Mobile Auth Section */}
               <div className="border-t border-gray-200 pt-4 mt-2">
-                {status === "loading" ? (
-                  <div className="space-y-2">
-                    <div className="h-9 bg-gray-200 animate-pulse rounded-md"></div>
-                    <div className="h-9 bg-gray-200 animate-pulse rounded-md"></div>
-                  </div>
-                ) : session ? (
+                {loggedInUser ? (
                   <div className="space-y-3">
                     <div className="px-3 py-2">
                       <p className="text-sm text-gray-500">Signed in as</p>
                       <p className="text-sm font-medium text-gray-900">
-                        {session.user?.name || session.user?.email}
+                        {loggedInUser}
                       </p>
                     </div>
                     <Link
@@ -194,7 +218,7 @@ export default function NavBar() {
                         setIsMenuOpen(false);
                         handleSignOut();
                       }}
-                      className="block w-full bg-gray-200 text-gray-700 px-3 py-2 rounded-md text-center hover:bg-gray-300 transition-colors font-medium"
+                      className="block cursor-pointer w-full bg-gray-200 text-gray-700 px-3 py-2 rounded-md text-center hover:bg-gray-300 transition-colors font-medium"
                     >
                       Sign Out
                     </button>

@@ -5,7 +5,7 @@ CREATE TABLE users (
     lname VARCHAR(150) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     account_type account_type NOT NULL,
-    password_hash TEXT NOT NULL,
+    pword TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -19,7 +19,7 @@ CREATE TABLE categories (
 
 -- PRODUCTS / LISTINGS
 CREATE TABLE products (
-   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+   listing_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
    account_id UUID REFERENCES users(id) ON DELETE CASCADE,
    product_image TEXT NOT NULL,
    product_name TEXT NOT NULL,
@@ -57,15 +57,16 @@ CREATE TABLE order_items (
 );
 -- REVIEWS
 CREATE TABLE reviews (
-    review_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
-    product_id UUID REFERENCES products(product_id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    listing_id UUID REFERENCES products(listing_id) ON DELETE CASCADE,
+    customer_id UUID REFERENCES users(id) ON DELETE CASCADE,
     rating INT CHECK (
         rating >= 1
         AND rating <= 5
     ),
-    comment TEXT,
-    created_at TIMESTAMP DEFAULT NOW()
+    feedback TEXT,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 -- ADDRESSES (For shipping)
 CREATE TABLE addresses (

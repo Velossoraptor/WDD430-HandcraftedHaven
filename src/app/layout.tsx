@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/layout/NavBar";
-import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
 import { CartProvider } from "@/components/context/CartContext";
 import { ToastContainer } from "react-toastify";
+import { redirect } from "next/navigation";
+import { verifySession } from "@/_lib/session";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,24 +27,22 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
   // Extract user ID from session if available for CartProvider context
-  const buyerId = session?.user?.id || session?.user?.sub || null;
+  const session = await verifySession();
 
+  const buyerId = session?.id;
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gray-50`}
       >
-        <SessionProvider session={session}>
-          <CartProvider buyerId={buyerId}>
-            <NavBar />
-            <main>
-              {children}
-              <ToastContainer />
-            </main>
-          </CartProvider>
-        </SessionProvider>
+        <CartProvider buyerId={buyerId}>
+          <NavBar />
+          <main>
+            {children}
+            <ToastContainer />
+          </main>
+        </CartProvider>
       </body>
     </html>
   );

@@ -19,10 +19,16 @@ export default pool;
 
 // Get user by email
 export async function getUserByEmail(email: string) {
-  const { rows } = await pool.query("SELECT * FROM vendors WHERE email = $1", [
-    email,
-  ]);
-  return rows[0] || null;
+  try {
+    const { rows } = await pool.query(
+      "SELECT * FROM users WHERE email = $1 LIMIT 1",
+      [email]
+    );
+    return rows[0] || null;
+  } catch (error) {
+    console.error("Error fetching user by email:", error);
+    throw error;
+  }
 }
 
 // Create user
@@ -31,14 +37,20 @@ export async function createUser(
   lname: string,
   email: string,
   account_type: string,
-  pword: string
+  hashedPassword: string
 ) {
-  const { rows } = await pool.query(
-    `INSERT INTO vendors (fname, lname, email, account_type, pword) 
-     VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-    [fname, lname, email, account_type, pword]
-  );
-  return rows[0] || null; // rows[0].id will give the new user id
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO users (fname, lname, email, account_type, pword) 
+       VALUES ($1, $2, $3, $4, $5) 
+       RETURNING id, fname, lname, email, account_type`,
+      [fname, lname, email, account_type, hashedPassword]
+    );
+    return rows[0] || null;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
 }
 
 // Create listings
