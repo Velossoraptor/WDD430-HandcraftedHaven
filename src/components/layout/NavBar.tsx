@@ -38,7 +38,7 @@ export default function NavBar() {
               Home
             </Link>
             <Link
-              href="/products"
+              href="/marketplace"
               className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
             >
               Marketplace
